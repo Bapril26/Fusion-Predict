@@ -1,0 +1,38 @@
+/* Example research data for the demo prediction. Fictional teams, clearly labelled in the app. */
+window.FP_DEMO = {
+  match: { home: 'Example FC', away: 'Sample United', competition: 'Demo League', kickoff: 'Sat 15:00', venue: 'Example Stadium', neutral_venue: false },
+  league: { name: 'Demo League', season: '2026/27', avg_home_goals: 1.45, avg_away_goals: 1.12 },
+  home: {
+    name: 'Example FC', position: 2, points: 19,
+    overall: { played: 9, w: 6, d: 1, l: 2, gf: 17, ga: 8 },
+    home_record: { played: 5, w: 4, d: 1, l: 0, gf: 11, ga: 3 },
+    away_record: { played: 4, w: 2, d: 0, l: 2, gf: 6, ga: 5 },
+    last6: { played: 6, results: 'WWDWLW', gf: 12, ga: 5 },
+    xg_for_per_game: 1.85, xg_against_per_game: 0.95, clean_sheets: 4, btts_pct: 44, over25_pct: 56, shots_per_game: 14.2, possession_pct: 56,
+    top_scorers: [{ name: 'J. Mokoena', goals: 6, availability: 'available' }, { name: 'L. Dube', goals: 4, availability: 'doubtful' }],
+    absences: [{ name: 'L. Dube', position: 'FWD', importance: 'regular', reason: 'Hamstring (doubtful)' }],
+    rest_days: 6,
+  },
+  away: {
+    name: 'Sample United', position: 9, points: 12,
+    overall: { played: 9, w: 3, d: 3, l: 3, gf: 11, ga: 12 },
+    home_record: { played: 4, w: 2, d: 1, l: 1, gf: 6, ga: 4 },
+    away_record: { played: 5, w: 1, d: 2, l: 2, gf: 5, ga: 8 },
+    last6: { played: 6, results: 'DLWDLW', gf: 7, ga: 8 },
+    xg_for_per_game: 1.2, xg_against_per_game: 1.4, clean_sheets: 2, btts_pct: 56, over25_pct: 44, shots_per_game: 10.8, possession_pct: 47,
+    top_scorers: [{ name: 'T. Nkosi', goals: 4, availability: 'available' }, { name: 'R. Adams', goals: 3, availability: 'available' }],
+    absences: [{ name: 'S. Khumalo', position: 'DEF', importance: 'key', reason: 'Suspended' }],
+    rest_days: 3,
+  },
+  h2h: [
+    { date: '2026-03-14', home: 'Sample United', away: 'Example FC', score: '1-2', competition: 'Demo League' },
+    { date: '2025-10-04', home: 'Example FC', away: 'Sample United', score: '2-0', competition: 'Demo League' },
+    { date: '2025-02-22', home: 'Sample United', away: 'Example FC', score: '1-1', competition: 'Demo Cup' },
+  ],
+  lineups: 'predicted',
+  summary: 'Example FC have been strong at home, unbeaten in five league games there, while Sample United have won only once on the road. A short turnaround for the visitors and a suspended centre-back add to the home side’s advantage.',
+  key_factors: ['Example FC unbeaten at home this season (W4 D1)', 'Sample United have won 1 of 5 away games', 'Sample United played 3 days ago', 'Sample United’s first-choice centre-back is suspended', 'Example FC won the last two meetings'],
+  data_as_of: '2026-10-15',
+  sources: [],
+  _odds: { home: 1.75, draw: 3.6, away: 4.75, over25: 1.95, under25: 1.85, btts_yes: 1.9, btts_no: 1.9 },
+};

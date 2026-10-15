@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F6FA">
+  <title>Fusion Predict</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app" aria-live="polite"></main>
+  <nav id="tabbar" class="tabbar" hidden>
+    <a href="#/home" data-tab="home"><span class="ti">🏠</span><span>Home</span></a>
+    <a href="#/predict" data-tab="predict" class="scan-tab"><span class="ti">⚽</span><span>Predict</span></a>
+    <a href="#/history" data-tab="history"><span class="ti">📒</span><span>History</span></a>
+    <a href="#/profile" data-tab="profile"><span class="ti">👤</span><span>Profile</span></a>
+  </nav>
+  <div id="sheet" class="sheet-wrap" hidden></div>
+  <div id="toast" class="toast" hidden></div>
+  <script src="model.js"></script>
+  <script src="ai.js"></script>
+  <script src="demo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

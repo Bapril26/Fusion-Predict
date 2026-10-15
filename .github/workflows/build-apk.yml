@@ -1,0 +1,68 @@
+name: Build Fusion Predict APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      # Test APK for your phone: includes the "Turn on Pro for testing" switch
+      - name: Build test APK
+        run: |
+          set -o pipefail
+          gradle --no-daemon assembleRelease -PtestUnlock=true 2>&1 | tee build.log
+
+      # If the build fails, post the error as annotations so it can be read without the full log
+      - name: Report build errors
+        if: failure()
+        run: |
+          grep -E "error:|e: |What went wrong|> |Could not|requires|incompatible|FAILED" build.log | grep -v "^> Task" | head -25 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/release/app-release.apk FusionPredict.apk
+
+      # Play Store bundle: real Google Play payments only, no test switch
+      - name: Build Play Store bundle (AAB)
+        run: |
+          set -o pipefail
+          gradle --no-daemon bundleRelease -PtestUnlock=false 2>&1 | tee build.log
+
+      - name: Rename AAB
+        run: cp app/build/outputs/bundle/release/app-release.aab FusionPredict-PlayStore.aab
+
+      - name: Upload files (Actions tab)
+        uses: actions/upload-artifact@v4
+        with:
+          name: FusionPredict-builds
+          path: |
+            FusionPredict.apk
+            FusionPredict-PlayStore.aab
+
+      - name: Publish downloads (Releases page)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Fusion Predict v1.0 build ${{ github.run_number }}
+          body: |
+            **FusionPredict.apk** - install on your Android phone for testing (includes "Turn on Pro for testing" in Profile).
+            **FusionPredict-PlayStore.aab** - upload this to Google Play Console (real payments only).
+          files: |
+            FusionPredict.apk
+            FusionPredict-PlayStore.aab

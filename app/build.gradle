@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Stable test signing key, so each new test APK installs as an update over the previous one.
+// Before publishing on Google Play, create a private upload key and keep it OUT of this repository.
+def signingProps = new Properties()
+def signingFile = file('test-signing.properties')
+if (signingFile.exists()) signingFile.withInputStream { signingProps.load(it) }
+
+android {
+    namespace 'za.co.fusionlabs.predict'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'za.co.fusionlabs.predict'
+        minSdk 24
+        targetSdk 36   // Google Play requires Android 16 (API 36) for new apps from 31 Aug 2026
+        versionCode 1
+        versionName '1.0'
+        // Test APKs (built with -PtestUnlock=true) show a "Turn on Pro for testing" switch.
+        // Play Store bundles are built without it.
+        buildConfigField 'boolean', 'TEST_UNLOCK', (project.findProperty('testUnlock') == 'true' ? 'true' : 'false')
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    signingConfigs {
+        test {
+            storeFile file(signingProps.getProperty('storeFile', 'fusionpredict-test.jks'))
+            storePassword signingProps.getProperty('storePassword', '')
+            keyAlias signingProps.getProperty('keyAlias', 'fusionpredict')
+            keyPassword signingProps.getProperty('keyPassword', '')
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingFile.exists() ? signingConfigs.test : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.webkit:webkit:1.11.0'
+    implementation 'com.android.billingclient:billing:8.3.0'
+    // Keep all Kotlin standard-library pieces on one version (avoids "Duplicate class kotlin..." errors)
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+}
